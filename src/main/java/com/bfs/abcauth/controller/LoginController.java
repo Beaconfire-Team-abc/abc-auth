@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class LoginController {
     }
 
     @PostMapping(value="/login")
-    public String login(HttpServletResponse response, String username, String password, String redirect, Model model) {
+    public String login(HttpServletRequest request, HttpServletResponse response, String username, String password, String redirect, Model model) {
 
         List<User> users = userRepository.findByEmailAndPassword(username , password);
         if (users == null || users.size() == 0){
@@ -46,6 +47,7 @@ public class LoginController {
         }
         User user = users.get(0);
         String userId = user.getUserId().toString();
+        request.getSession().setAttribute("userId", userId);
         HashMap<String, String> payLoad = new HashMap<>();
 
         payLoad.put("userId", userId);
@@ -55,9 +57,7 @@ public class LoginController {
         System.out.println(userId);
         System.out.println(redirect);
 
-        return "test";
+        return "redirect:" + redirect;
     }
-
-
 
 }
