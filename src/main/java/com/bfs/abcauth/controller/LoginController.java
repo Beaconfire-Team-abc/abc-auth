@@ -4,15 +4,11 @@ import com.bfs.abcauth.entity.User;
 import com.bfs.abcauth.repository.UserRepository;
 import com.bfs.abcauth.security.CookieUtil;
 import com.bfs.abcauth.security.JwtUtil;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +18,7 @@ import java.util.List;
 
 @Controller
 public class LoginController {
-    private static final String jwtTokenCookieName = "JWT-TOKEN";
+    private static final String jwtTokenCookieName = "TEAMABC-JWT-TOKEN";
     private static final String signingKey = "signingKey";
 
     private UserRepository userRepository;
@@ -33,7 +29,6 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        System.out.println("get login is ok");
         return "login";
     }
 
@@ -54,10 +49,8 @@ public class LoginController {
 
         String token = JwtUtil.generateToken(signingKey, payLoad);
         CookieUtil.create(response, jwtTokenCookieName, token, false, -1, "localhost");
-        System.out.println(userId);
-        System.out.println(redirect);
 
-        return "redirect:" + redirect;
+        return "redirect:" + "http://localhost:3000/";
     }
 
 }
